@@ -2,7 +2,7 @@
 
 O **HabitFlow** é um portal de monitoramento de hábitos e produtividade desenvolvido para ajudar os usuários a organizarem suas rotinas, acompanharem seus hábitos diários e gerenciarem suas tarefas de maneira simples e intuitiva.
 
-A plataforma reúne ferramentas de acompanhamento de hábitos e organização de atividades em um único ambiente, permitindo visualizar o progresso e manter uma rotina mais produtiva.
+A plataforma reúne ferramentas de acompanhamento de hábitos e organização de atividades em um único ambiente, permitindo visualizar o progresso e desenvolver uma rotina mais produtiva.
 
 ## 🎯 1. Objetivo do Projeto
 
@@ -21,7 +21,7 @@ O projeto é direcionado a:
 
 ## ❗ 3. Problema que a Solução Pretende Resolver
 
-Muitas pessoas possuem dificuldades para manter uma rotina consistente, organizar suas tarefas e acompanhar o desenvolvimento de seus hábitos.
+Muitas pessoas enfrentam dificuldades para manter uma rotina consistente, organizar suas tarefas e acompanhar o desenvolvimento de seus hábitos.
 
 A falta de organização e de ferramentas para monitorar o progresso pode comprometer a produtividade e dificultar o alcance de objetivos pessoais.
 
@@ -29,11 +29,11 @@ O HabitFlow pretende solucionar esse problema oferecendo um portal centralizado 
 
 ## 🖥️ 4. Planejamento e Organização das Interfaces
 
-A aplicação está organizada em quatro áreas principais, acessíveis por meio de uma barra lateral de navegação.
+A aplicação está organizada em quatro áreas principais, acessíveis por meio de uma barra lateral de navegação (Sidebar).
 
 ### 4.1. Visão Geral
 
-É a tela inicial da aplicação, responsável por apresentar um resumo do desempenho diário do usuário.
+Tela inicial responsável por apresentar um resumo do desempenho diário do usuário.
 
 **Elementos da interface:**
 - Barra de progresso geral dos hábitos.
@@ -46,7 +46,7 @@ A aplicação está organizada em quatro áreas principais, acessíveis por meio
 
 Área destinada ao gerenciamento dos hábitos cadastrados pelo usuário.
 
-**Funcionalidades:**
+**Funcionalidades previstas:**
 - Cadastro de novos hábitos.
 - Edição de hábitos existentes.
 - Listagem dos hábitos cadastrados.
@@ -66,7 +66,7 @@ A aplicação está organizada em quatro áreas principais, acessíveis por meio
 
 Área destinada à organização e ao acompanhamento de tarefas.
 
-**Funcionalidades:**
+**Funcionalidades previstas:**
 - Adição de novas tarefas.
 - Marcação de tarefas como concluídas.
 - Visualização de tarefas pendentes.
@@ -84,7 +84,7 @@ A aplicação está organizada em quatro áreas principais, acessíveis por meio
 
 ## 🗺️ 5. Navegação da Aplicação
 
-A navegação principal é realizada por meio de uma barra lateral (Sidebar), que permite acessar as quatro áreas do sistema:
+A navegação principal é realizada por meio de uma barra lateral (Sidebar), que permite acessar as quatro áreas do sistema.
 
 | Área | Identificador |
 |---|---|
@@ -95,9 +95,11 @@ A navegação principal é realizada por meio de uma barra lateral (Sidebar), qu
 
 A aplicação também possui uma barra superior (Topbar), contendo uma saudação personalizada e um campo de busca global.
 
+<badge color="success">Concluído</badge> A estrutura de navegação entre as quatro áreas principais já foi desenvolvida.
+
 ## 🎨 6. Identidade Visual
 
-A identidade visual do HabitFlow foi planejada para transmitir organização, equilíbrio, produtividade e evolução pessoal.
+A identidade visual do HabitFlow busca transmitir organização, equilíbrio, produtividade e evolução pessoal.
 
 **Diretrizes visuais:**
 
@@ -108,7 +110,7 @@ A identidade visual do HabitFlow foi planejada para transmitir organização, eq
 - Navegação lateral para facilitar o acesso às funcionalidades.
 - Layout adaptável a diferentes tamanhos de tela.
 
-A proposta visual prioriza uma experiência simples, agradável e funcional, permitindo que o usuário acompanhe suas atividades sem dificuldades.
+A proposta visual prioriza uma experiência simples, agradável e funcional.
 
 ## 🏗️ 7. Estrutura do Projeto
 
@@ -132,8 +134,8 @@ HabitFlow/
 
 | Arquivo/Pasta | Responsabilidade |
 |---|---|
-| `index.html` | Estrutura das páginas e elementos da aplicação. |
-| `css/style.css` | Estilização e identidade visual do sistema. |
+| `index.html` | Estrutura e organização dos elementos da aplicação. |
+| `css/style.css` | Estilização, layout e identidade visual do sistema. |
 | `js/script.js` | Lógica, interações e funcionalidades da aplicação. |
 | `README.md` | Documentação e planejamento do projeto. |
 
@@ -141,42 +143,55 @@ HabitFlow/
 
 - **HTML5:** construção da estrutura e organização dos elementos da aplicação.
 - **CSS3:** estilização, layout e identidade visual.
-- **JavaScript:** implementação das funcionalidades, interações e manipulação dinâmica dos dados.
+- **JavaScript:** implementação das funcionalidades, interações e manipulação dinâmica dos elementos.
 
-## 🚀 9. Escopo de Desenvolvimento
+## 🚀 9. Funcionalidades Implementadas e Pendentes
 
-O desenvolvimento será realizado gradualmente, priorizando inicialmente a estrutura e as funcionalidades essenciais do portal.
-
-**Funcionalidades previstas:**
+### Funcionalidades implementadas
 
 - [x] Estrutura inicial das quatro áreas principais.
 - [x] Navegação básica entre as áreas.
-- [x] Estrutura do dashboard de visão geral.
+- [x] Estrutura visual do Dashboard.
 - [x] Interface de gerenciamento de hábitos.
-- [x] Formulário de cadastro e edição de hábitos.
+- [x] Criação dinâmica de formulário para cadastro de hábitos.
+- [x] Campo para informar o nome do hábito.
+- [x] Campo para informar a descrição do hábito.
+- [x] Seleção de categoria.
+- [x] Validação para impedir cadastro com nome vazio.
+- [x] Inserção dinâmica de hábitos na lista da Visão Geral.
+- [x] Botão para marcar e desmarcar hábitos como concluídos.
+- [x] Fechamento automático do formulário após o cadastro.
+- [x] Prevenção de abertura de formulários duplicados.
 - [x] Estrutura visual do checklist.
 - [x] Interface de perfil do usuário.
-- [ ] Implementação completa do gerenciamento de hábitos.
-- [ ] Atualização dinâmica dos indicadores de progresso.
-- [ ] Implementação completa do checklist.
-- [ ] Persistência dos dados cadastrados.
+
+### Funcionalidades pendentes
+
+- [ ] Implementação completa da edição e exclusão de hábitos.
+- [ ] Integração dos dados de descrição e categoria na listagem.
+- [ ] Atualização automática da barra de progresso geral.
+- [ ] Atualização dos indicadores de hábitos ativos e dias acumulados.
+- [ ] Implementação completa do gerenciamento de tarefas.
+- [ ] Atualização automática do progresso do checklist.
+- [ ] Implementação de filtros e buscas funcionais.
+- [ ] Armazenamento persistente dos dados.
 - [ ] Aprimoramento da responsividade.
 
-*As marcações devem ser atualizadas conforme as funcionalidades forem efetivamente implementadas e testadas.*
+## 📦 10. Escopo da Primeira Entrega
 
-## 📦 10. Entregável — Primeira Versão
+A primeira versão do HabitFlow tem como objetivo apresentar a estrutura inicial da aplicação, a identidade visual e a navegação entre as principais áreas do sistema.
 
-A primeira versão do HabitFlow contempla a estrutura inicial da aplicação, a organização das quatro áreas principais e a proposta de navegação entre as interfaces.
-
-O objetivo desta etapa é apresentar uma versão executável do portal, demonstrando a organização do projeto, sua identidade visual inicial e o desenvolvimento de pelo menos 20% do escopo obrigatório.
-
-**Entregáveis desta etapa:**
+Nesta etapa, foram desenvolvidos:
 
 - Estrutura inicial do projeto.
-- Organização das interfaces.
+- Organização das quatro interfaces principais.
 - Navegação básica entre as áreas.
 - Proposta inicial de identidade visual.
-- Documentação do planejamento e da organização das interfaces.
+- Formulário dinâmico para cadastro de hábitos.
+- Inserção de hábitos na interface.
+- Interação para marcar hábitos como concluídos.
+
+A entrega busca demonstrar pelo menos 20% do escopo obrigatório, apresentando uma versão inicial executável e funcionalidades que representam a proposta central da aplicação.
 
 ## ▶️ 11. Como Executar o Projeto
 
@@ -186,7 +201,7 @@ O objetivo desta etapa é apresentar uma versão executável do portal, demonstr
 git clone https://github.com/iguu0/HabitFlow.git
 ```
 
-2. Entre na pasta do projeto:
+2. Acesse a pasta do projeto:
 
 ```bash
 cd HabitFlow
@@ -194,13 +209,15 @@ cd HabitFlow
 
 3. Abra o arquivo `index.html` em seu navegador.
 
-Não é necessária a instalação de dependências ou ferramentas adicionais para executar a versão inicial.
+Não é necessária a instalação de dependências adicionais para executar a estrutura inicial.
 
 ## 📌 12. Status do Projeto
 
 🚧 **Em desenvolvimento — Primeira versão.**
 
-O HabitFlow encontra-se em fase de desenvolvimento, com foco na implementação das funcionalidades de gerenciamento de hábitos, organização de tarefas e acompanhamento da produtividade.
+O HabitFlow encontra-se em fase de desenvolvimento, com sua estrutura principal e navegação organizadas. As funcionalidades de cadastro e acompanhamento inicial de hábitos já começaram a ser implementadas.
+
+As próximas etapas envolvem aprimorar o gerenciamento de hábitos, implementar o checklist e integrar os indicadores de produtividade.
 
 ---
 
