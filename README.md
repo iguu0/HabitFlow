@@ -134,7 +134,8 @@ HabitFlow/
 
 | Arquivo/Pasta | Responsabilidade |
 |---|---|
-| `index.html` | Estrutura e organização dos elementos da aplicação. |
+| `index.html` | Tela inicial.. |
+| `app.html` | Estrutura e organização dos elementos da aplicação. |
 | `css/style.css` | Estilização, layout e identidade visual do sistema. |
 | `js/script.js` | Lógica, interações e funcionalidades da aplicação. |
 | `README.md` | Documentação e planejamento do projeto. |
