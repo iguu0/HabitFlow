@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HabitFlow - Painel do Usuario</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="layout-app">
+
+  <!-- ================= BARRA LATERAL (SIDEBAR) ================= -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <h1>HabitFlow</h1>
+      <p class="slogan">construa os seus habitos</p>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Navegacao principal">
+      <ul>
+        <li><a href="#visao-geral" class="nav-item ativo" id="link-visao-geral">Visao Geral</a></li>
+        <li><a href="#meus-habitos" class="nav-item" id="link-meus-habitos">Meus habitos</a></li>
+        <li><a href="#meu-checklist" class="nav-item" id="link-meu-checklist">Meu checklist</a></li>
+        <li><a href="#perfil" class="nav-item" id="link-perfil">Perfil</a></li>
+        <li><a href="index.html" class="nav-item nav-sair" id="link-sair">Sair / Voltar</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- ================= PAINEL DE CONTEUDO ================= -->
+  <div class="painel-conteudo">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="saudacao-usuario">
+        <p>Bem-vindo(a), <strong id="usuario-nome">Usuario</strong></p>
+      </div>
+      <form class="busca-global" role="search" onsubmit="event.preventDefault();">
+        <label for="campo-busca-global" class="sr-only">Buscar habitos ou tarefas</label>
+        <input type="search" id="campo-busca-global" placeholder="Busca...">
+      </form>
+    </header>
+
+    <main class="conteudo-telas">
+
+      <!-- ================= 1. VISAO GERAL ================= -->
+      <section id="visao-geral" class="tela-secao tela-ativa">
+        <header class="secao-cabecalho">
+          <h2>Barra de Progresso Geral <span class="subtitulo">(visao geral)</span></h2>
+        </header>
+
+        <article class="card-destaque progresso-geral-card">
+          <p class="frase-motivacional">Monitore e conquiste <strong>seus objetivos diarios.</strong></p>
+          
+          <div class="barra-progresso-container" aria-label="Progresso geral diario">
+            <div class="barra-progresso-preenchimento" id="progresso-geral-barra" style="width: 0%;">
+              <span id="progresso-geral-texto">0%</span>
+            </div>
+          </div>
+          
+          <p class="progresso-contador">
+            <span id="contador-habitos-concluidos">0</span> habitos feitos / 
+            <span id="contador-habitos-total">0</span> total
+          </p>
+        </article>
+
+        <section class="habitos-hoje-secao">
+          <h3>Habitos de hoje</h3>
+          
+          <ul class="lista-habitos-hoje" id="lista-habitos-hoje">
+            <li class="item-vazio" id="mensagem-vazio-hoje">
+              Nenhum habito cadastrado para hoje. Cadastre um novo habito abaixo.
+            </li>
+          </ul>
+
+          <button type="button" class="btn-primario btn-full" id="btn-adicionar-habito-atalho">
+            + Adicionar Novo Habito
+          </button>
+        </section>
+      </section>
+
+      <!-- ================= 2. MEUS HABITOS (CRUD) ================= -->
+      <section id="meus-habitos" class="tela-secao">
+        <header class="secao-cabecalho">
+          <h2>Meus Habitos</h2>
+        </header>
+
+        <div class="grade-meus-habitos">
+          <div class="coluna-listagem">
+            <div class="barra-ferramentas">
+              <label for="filtro-busca-habito" class="sr-only">Busca dos habitos</label>
+              <input type="search" id="filtro-busca-habito" placeholder="Busca dos habitos...">
+
+              <label for="filtro-categoria" class="sr-only">Filtrar por Categoria</label>
+              <select id="filtro-categoria">
+                <option value="todas">Todas as categorias</option>
+                <option value="Saude">Saude</option>
+                <option value="Carreira">Carreira</option>
+                <option value="Estudos">Estudos</option>
+                <option value="Produtividade">Produtividade</option>
+              </select>
+
+              <button type="button" class="btn-secundario" id="btn-gerenciar-categorias">
+                Gerenciar Categorias
+              </button>
+            </div>
+
+            <div class="tabela-container">
+              <table class="tabela-habitos">
+                <thead>
+                  <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Categoria</th>
+                    <th scope="col">Meta</th>
+                    <th scope="col">Dias</th>
+                    <th scope="col">Acoes</th>
+                  </tr>
+                </thead>
+                <tbody id="corpo-tabela-habitos">
+                  <tr id="linha-tabela-vazia">
+                    <td colspan="5" class="texto-centralizado">Nenhum habito cadastrado ate o momento.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="coluna-formulario">
+            <section class="card-formulario">
+              <h3 id="titulo-form-habito">Adicionar Novo Habito</h3>
+              
+              <form id="form-habito">
+                <input type="hidden" id="habito-id" value="">
+
+                <div class="grupo-campo">
+                  <label for="habito-nome">Nome do habito</label>
+                  <input type="text" id="habito-nome" name="nome" placeholder="Ex: Beber agua, Praticar exercicios" required>
+                </div>
+
+                <div class="grupo-campo">
+                  <label for="habito-categoria">Categoria</label>
+                  <select id="habito-categoria" name="categoria" required>
+                    <option value="" disabled selected>Selecione a categoria</option>
+                    <option value="Saude">Saude</option>
+                    <option value="Carreira">Carreira</option>
+                    <option value="Estudos">Estudos</option>
+                    <option value="Produtividade">Produtividade</option>
+                  </select>
+                </div>
+
+                <div class="grupo-campo">
+                  <label for="habito-meta">Meta diaria ou semanal</label>
+                  <input type="text" id="habito-meta" name="meta" placeholder="Ex: 30 min/dia, 2L/dia" required>
+                </div>
+
+                <div class="grupo-campo">
+                  <label for="habito-frequencia">Frequencia</label>
+                  <select id="habito-frequencia" name="frequencia" required>
+                    <option value="" disabled selected>Selecione a frequencia</option>
+                    <option value="Diario">Diario</option>
+                    <option value="Dias uteis">Dias uteis</option>
+                    <option value="Finais de semana">Finais de semana</option>
+                  </select>
+                </div>
+
+                <div class="acoes-formulario">
+                  <button type="submit" class="btn-primario" id="btn-salvar-habito">Salvar Habito</button>
+                  <button type="reset" class="btn-neutro" id="btn-cancelar-habito">Cancelar</button>
+                </div>
+              </form>
+            </section>
+
+            <section class="indicadores-container" aria-label="Indicadores gerais de habitos">
+              <div class="card-indicador">
+                <h4>Habitos Ativos</h4>
+                <p class="valor-indicador" id="indicador-habitos-ativos">0</p>
+              </div>
+
+              <div class="card-indicador">
+                <h4>Categorias</h4>
+                <p class="valor-indicador" id="indicador-categorias">0</p>
+              </div>
+
+              <div class="card-indicador">
+                <h4>Dias Acumulados</h4>
+                <p class="valor-indicador" id="indicador-dias-acumulados">0</p>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 3. MEU CHECKLIST ================= -->
+      <section id="meu-checklist" class="tela-secao">
+        <header class="secao-cabecalho">
+          <h2>Meu Checklist</h2>
+          <p class="descricao-secao">Organize suas tarefas e acompanhe seu progresso.</p>
+        </header>
+
+        <article class="card-destaque progresso-checklist-card">
+          <div class="checklist-status-cabecalho">
+            <span>Progresso das tarefas</span>
+            <span class="checklist-contagem">
+              <strong id="checklist-concluidas">0</strong> de <strong id="checklist-total">0</strong> tarefas concluidas
+            </span>
+            <span class="checklist-porcentagem" id="checklist-porcentagem">0%</span>
+          </div>
+          <div class="barra-progresso-container">
+            <div class="barra-progresso-preenchimento" id="barra-progresso-checklist" style="width: 0%;"></div>
+          </div>
+        </article>
+
+        <div class="barra-ferramentas-checklist">
+          <form id="form-nova-tarefa" class="form-tarefa-inline" onsubmit="event.preventDefault();">
+            <label for="campo-nova-tarefa" class="sr-only">Nome da nova tarefa</label>
+            <input type="text" id="campo-nova-tarefa" placeholder="Digite uma nova tarefa...">
+            <button type="submit" class="btn-primario" id="btn-adicionar-tarefa">Adicionar tarefa +</button>
+          </form>
+
+          <div class="filtro-checklist-container">
+            <label for="filtro-checklist" class="sr-only">Filtrar tarefas</label>
+            <select id="filtro-checklist">
+              <option value="todas">Todas as tarefas</option>
+              <option value="concluidas">Concluidas</option>
+              <option value="pendentes">Pendentes</option>
+            </select>
+          </div>
+        </div>
+
+        <ul class="lista-checklist" id="lista-checklist">
+          <li class="item-vazio" id="mensagem-vazio-checklist">
+            Nenhuma tarefa cadastrada no checklist. Digite uma tarefa acima e clique em "Adicionar tarefa +".
+          </li>
+        </ul>
+      </section>
+
+      <!-- ================= 4. PERFIL ================= -->
+      <section id="perfil" class="tela-secao">
+        <header class="secao-cabecalho">
+          <h2>Perfil do Usuario</h2>
+        </header>
+        
+        <article class="card-destaque perfil-info">
+          <p><strong>Nome:</strong> <span id="perfil-nome-exibicao">Nao informado</span></p>
+          <p><strong>Status da Conta:</strong> Ativo</p>
+        </article>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="js/script.js" defer></script>
+</body>
+</html>
