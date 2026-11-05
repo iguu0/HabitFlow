@@ -2,19 +2,49 @@ const habitos = document.getElementById("lista-habitos-hoje");
 const vazioHoje = document.getElementById("mensagem-vazio-hoje");
 const main = document.getElementById("main-tela");
 
-function salvarHabitoNaTela(nomeHabito) {
+let informacoesDeHabitosAdicionados = {
+    habitos: 0,
+    habitosFeitos: 0,
+    porcentagem: "0%"
+}
+
+function MudarBarra(OqueVaiMudar, quantidade) {
+    informacoesDeHabitosAdicionados[OqueVaiMudar] += quantidade;
+    const contadorConcluidos = document.getElementById('contador-habitos-concluidos');
+    const contadorTotal = document.getElementById('contador-habitos-total');
+    
+
+    contadorConcluidos.textContent = `${informacoesDeHabitosAdicionados.habitosFeitos}`;
+    contadorTotal.textContent = `${informacoesDeHabitosAdicionados.habitos}`;
+
+}
+
+function AdicionarHabitoNaDiv(nomeHabito, tipo) {
     if (vazioHoje) {
         vazioHoje.style.display = "none"; 
     }
 
     const habitoNovo = document.createElement('li');
 
+    const containerTexto = document.createElement('div');
+    containerTexto.style.display = "flex";
+    containerTexto.style.flexDirection = "column";
+
     const textoSpan = document.createElement('span');
     textoSpan.textContent = nomeHabito;
+    textoSpan.style.fontWeight = "bold";
+
+    const tipoSpan = document.createElement('span');
+    tipoSpan.textContent = tipo;
+    tipoSpan.style.fontSize = "0.85em";
+    tipoSpan.style.color = "#666";
+
+    containerTexto.appendChild(textoSpan);
+    containerTexto.appendChild(tipoSpan);
 
     const botaoConcluir = document.createElement('button');
     botaoConcluir.style.backgroundColor = "white";
-    botaoConcluir.style.marginRight = "5px";
+    botaoConcluir.style.marginRight = "10px";
     botaoConcluir.style.height = "25px";
     botaoConcluir.style.width = "25px";
     botaoConcluir.style.border = "none";
@@ -24,14 +54,23 @@ function salvarHabitoNaTela(nomeHabito) {
     botaoConcluir.onclick = function() {
         if (this.style.backgroundColor !== "rgb(51, 204, 255)") {
             this.style.backgroundColor = "#33CCFF";
+            MudarBarra('habitosFeitos', 1)
         } else {
             this.style.backgroundColor = "white";
+            MudarBarra('habitosFeitos', -1)
         }
     };
 
     habitoNovo.appendChild(botaoConcluir);
-    habitoNovo.appendChild(textoSpan);
+    habitoNovo.appendChild(containerTexto);
+    
+    habitoNovo.style.display = "flex";
+    habitoNovo.style.alignItems = "center";
+    habitoNovo.style.marginBottom = "8px";
+
     habitos.appendChild(habitoNovo);
+
+    MudarBarra('habitos', 1)
 }
 
 function iformacoesHabito() {
@@ -102,10 +141,13 @@ function iformacoesHabito() {
 
         const nomeInput = document.getElementById("InputNomeHabito");
         const nomeHabito = nomeInput ? nomeInput.value.trim() : "";
-
         if (!nomeHabito) return;
 
-        salvarHabitoNaTela(nomeHabito);
+        const SelectDoTipo = document.getElementById("SelectTipoHábito");
+        const tipoSelecionado = SelectDoTipo ? SelectDoTipo.options[SelectDoTipo.selectedIndex].text.trim() : "";
+        if (!tipoSelecionado) return;
+
+        AdicionarHabitoNaDiv(nomeHabito, tipoSelecionado);
 
         divDoHabito.remove();
     });
