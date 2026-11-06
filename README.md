@@ -119,6 +119,8 @@ O projeto está organizado da seguinte maneira:
 ```text
 HabitFlow/
 │
+├──app.html
+│
 ├── index.html
 │
 ├── css/
