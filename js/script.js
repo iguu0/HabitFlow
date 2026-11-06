@@ -217,12 +217,34 @@ function iformacoesHabito() {
         }
     }
 
+    const divBotoes = document.createElement('div')
+
     const botaoPost = document.createElement('button');
     botaoPost.type = "submit";
     botaoPost.textContent = "Criar";
-    botaoPost.style.marginTop = "10px";
-    botaoPost.style.padding = "8px 16px";
-    divForm.appendChild(botaoPost);
+    botaoPost.style.background = "transparent";
+    botaoPost.style.width = "100px"
+    botaoPost.style.color = "white";
+    botaoPost.style.border = "2px";
+    botaoPost.style.borderRadius = "20px";
+    botaoPost.style.borderColor = "white"
+    botaoPost.style.borderStyle = "solid"
+    botaoPost.style.marginRight = "10px"
+    divBotoes.appendChild(botaoPost);
+
+    const botaoCancelar = document.createElement('button');
+    botaoCancelar.type = "submit";
+    botaoCancelar.textContent = "Criar";
+    botaoCancelar.style.background = "transparent";
+    botaoCancelar.style.width = "100px"
+    botaoCancelar.style.color = "white";
+    botaoCancelar.style.border = "2px";
+    botaoCancelar.style.borderRadius = "20px";
+    botaoCancelar.style.borderColor = "white"
+    botaoCancelar.style.borderStyle = "solid"
+    divBotoes.appendChild(botaoCancelar);
+
+    divForm.appendChild(divBotoes);
 
     divDoHabito.appendChild(divForm);
     main.appendChild(divDoHabito);

@@ -103,7 +103,7 @@ body {
 .lista-habitos-hoje, .lista-checklist {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0px;
   margin-bottom: 16px;
 }
 .lista-habitos-hoje li, .lista-checklist li {
