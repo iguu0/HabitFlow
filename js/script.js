@@ -5,15 +5,23 @@ const main = document.getElementById("main-tela");
 let informacoesDeHabitosAdicionados = {
     habitos: 0,
     habitosFeitos: 0,
-    porcentagem: "0%"
 }
 
 function MudarBarra(OqueVaiMudar, quantidade) {
     informacoesDeHabitosAdicionados[OqueVaiMudar] += quantidade;
     const contadorConcluidos = document.getElementById('contador-habitos-concluidos');
     const contadorTotal = document.getElementById('contador-habitos-total');
-    
+    const porcentagemTexto = document.getElementById('progresso-geral-texto');
+    const tamanhoBarra = document.getElementById('progresso-geral-barra');
 
+    const totais = informacoesDeHabitosAdicionados.habitos;
+    const feitas = informacoesDeHabitosAdicionados.habitosFeitos;
+    const porcentagem = (feitas / totais) * 100;
+    
+    tamanhoBarra.style.transition = "all 1s"
+    tamanhoBarra.style.width = `${porcentagem}%`
+    
+    porcentagemTexto.textContent = `${porcentagem}%`;
     contadorConcluidos.textContent = `${informacoesDeHabitosAdicionados.habitosFeitos}`;
     contadorTotal.textContent = `${informacoesDeHabitosAdicionados.habitos}`;
 
@@ -24,7 +32,17 @@ function AdicionarHabitoNaDiv(nomeHabito, tipo) {
         vazioHoje.style.display = "none"; 
     }
 
+    habitos.style.backgroundColor = "#3a3a3c";
+    habitos.style.display = "flex";
+    habitos.style.alignItems = "center";
+    habitos.style.borderRadius = "10px";
+    habitos.style.borderWidth = "1px"
+    habitos.style.borderStyle = "none"
+    habitos.style.marginTop = "5px"
+    habitos.style.paddingTop = "8px"
+
     const habitoNovo = document.createElement('li');
+    habitoNovo.style.width = "98%"
 
     const containerTexto = document.createElement('div');
     containerTexto.style.display = "flex";
