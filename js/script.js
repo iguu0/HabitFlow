@@ -120,7 +120,6 @@ function AdicionarHabitoNaDiv(nomeHabito, tipo) {
     apagar.style.marginLeft = "auto";
     apagar.style.cursor = "pointer";
 
-    // arrumar habitos feitos que não diminui
     apagar.onclick = function() {
         habitoNovo.remove();
         MudarBarra('habitos', -1);
@@ -191,12 +190,13 @@ function CriacaoHabito() {
             border: "1px solid gray"
         },
         {
-            background: "transparent",
+            backgroundColor: "#2d2d2d",
             width: "100px",
             color: "white",
-            border: "2px solid white",
-            borderRadius: "20px",
-            marginRight: "10px"
+            border: "2px solid #33CCFF",
+            borderRadius: "10px",
+            marginRight: "10px",
+            transition: "all 0.5s"
         }
     ];
 
@@ -270,11 +270,10 @@ function CriacaoHabito() {
     }
 
     const divBotoes = document.createElement('div');
-    const botaoPost = document.createElement('button');
-    botaoPost.type = "submit";
-    botaoPost.textContent = "Criar";
-    adicionarStyle(5, botaoPost, styleDiv);
-    divBotoes.appendChild(botaoPost);
+    const botaoCriar = document.createElement('button');
+    botaoCriar.type = "submit";
+    botaoCriar.textContent = "Criar";
+    adicionarStyle(5, botaoCriar, styleDiv);
 
     const botaoCancelar = document.createElement('button');
     botaoCancelar.textContent = "Cancelar";
@@ -284,8 +283,28 @@ function CriacaoHabito() {
         divDeAdicionarHabito.remove();
     }
 
+    botaoCancelar.addEventListener("mouseenter", function() {
+        botaoCancelar.style.borderColor = "white";
+        botaoCancelar.style.backgroundColor = "#414141";
+    })
+    botaoCancelar.addEventListener("mouseleave", function() {
+        botaoCancelar.style.borderColor = "#33CCFF";
+        botaoCancelar.style.backgroundColor = "#2d2d2d";
+    })
+
+    botaoCriar.addEventListener("mouseenter", function() {
+        botaoCriar.style.borderColor = "white";
+        botaoCriar.style.backgroundColor = "#414141";
+    })
+    botaoCriar.addEventListener("mouseleave", function() {
+        botaoCriar.style.borderColor = "#33CCFF";
+        botaoCriar.style.backgroundColor = "#2d2d2d";
+    })
+
     divBotoes.appendChild(botaoCancelar);
+    divBotoes.appendChild(botaoCriar);
     divForm.appendChild(divBotoes);
+
     divDeAdicionarHabito.appendChild(divForm);
     main.appendChild(divDeAdicionarHabito);
 }
