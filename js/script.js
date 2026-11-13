@@ -7,36 +7,39 @@ let informacoesDeHabitosAdicionados = {
     habitosFeitos: 0,
     checagemConcluidos: {}
 }
-
+// função para adicionar estilos a um elemento
 function adicionarStyle(Index, Modificado, style) {
     for (let i in style[Index]) {
         Modificado.style[i] = style[Index][i];
     }
 }
 
+// função para atualizar a barra de progresso e os contadores
 function MudarBarra(OqueVaiMudar, quantidade) {
     informacoesDeHabitosAdicionados[OqueVaiMudar] += quantidade;
+
     const contadorConcluidos = document.getElementById('contador-habitos-concluidos');
     const contadorTotal = document.getElementById('contador-habitos-total');
     const porcentagemTexto = document.getElementById('progresso-geral-texto');
     const tamanhoBarra = document.getElementById('progresso-geral-barra');
+    const graficoPizza = document.getElementById('grafico-pizza');
 
     const totais = informacoesDeHabitosAdicionados.habitos;
     const feitas = informacoesDeHabitosAdicionados.habitosFeitos;
     const porcentagem = totais > 0 ? Math.round((feitas / totais) * 100) : 0;
-    
-    tamanhoBarra.style.transition = "all 1s"
-    tamanhoBarra.style.width = `${porcentagem}%`
-    
-    porcentagemTexto.textContent = `${porcentagem}%`;
-    contadorConcluidos.textContent = `${informacoesDeHabitosAdicionados.habitosFeitos}`;
-    contadorTotal.textContent = `${informacoesDeHabitosAdicionados.habitos}`;
 
-    if (informacoesDeHabitosAdicionados.habitos == 0 ) {
+    porcentagemTexto.textContent = `${porcentagem}%`;
+    contadorConcluidos.textContent = `${feitas}`;
+    contadorTotal.textContent = `${totais}`;
+
+    tamanhoBarra.style.width = `${porcentagem}%`;
+    graficoPizza.style.background = `conic-gradient(var(--azul) 0% ${porcentagem}%, var(--borda) ${porcentagem}% 100%)`;
+
+    if (informacoesDeHabitosAdicionados.habitos == 0) {
         vazioHoje.style.display = "";
         vazioHoje.style.width = "100%";
         vazioHoje.style.height = "100%";
-        
+
         habitos.style.backgroundColor = "";
         habitos.style.display = "";
         habitos.style.alignItems = "";
@@ -47,7 +50,7 @@ function MudarBarra(OqueVaiMudar, quantidade) {
         habitos.style.paddingTop = "";
     }
 }
-
+// função para adicionar um hábito à lista de hábitos
 function AdicionarHabitoNaDiv(nomeHabito, tipo) {
     if (vazioHoje) {
         vazioHoje.style.display = "none"; 
@@ -55,8 +58,7 @@ function AdicionarHabitoNaDiv(nomeHabito, tipo) {
 
     const style = [
         {
-            backgroundColor: "#3a3a3c",
-            display: "flex",
+            backgroundColor: "#131a27",
             alignItems: "center",
             borderRadius: "10px",
             borderWidth: "1px",
@@ -65,10 +67,10 @@ function AdicionarHabitoNaDiv(nomeHabito, tipo) {
             paddingTop: "8px"
         },
         {
-            width: "98%",
+            width: "95%",
             display: "flex",
-            alignItems: "center",
-            marginBottom: "8px"
+            margin: "0 auto",
+            border: "none"
         },
         {
             backgroundColor: "white",
@@ -76,6 +78,7 @@ function AdicionarHabitoNaDiv(nomeHabito, tipo) {
             height: "25px",
             width: "25px",
             border: "none",
+            borderRadius: "15%",
             cursor: "pointer",
             transition: "all 0.2s ease"
         }
@@ -115,8 +118,11 @@ function AdicionarHabitoNaDiv(nomeHabito, tipo) {
         }
     };
 
-    const apagar = document.createElement('h2');
-    apagar.textContent = "X";
+    const apagar = document.createElement('img');
+    apagar.src = "img/lixeira.png";
+    apagar.alt = "Apagar hábito";
+
+    apagar.style.width = "20px";
     apagar.style.marginLeft = "auto";
     apagar.style.cursor = "pointer";
 
@@ -140,63 +146,24 @@ function AdicionarHabitoNaDiv(nomeHabito, tipo) {
     habitos.appendChild(habitoNovo);
     MudarBarra('habitos', 1);
 }
-
+// função para criar o modal de criação de hábito
 function CriacaoHabito() {
     const styleDiv = [
         {
-            backgroundColor: "#242526",
-            height: "500px",
-            width: "500px",
-            borderRadius: "20px",
-            borderWidth: "1px",
-            borderColor: "gray",
-            borderStyle: "solid",
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            zIndex: "1000"
-        },
-        {
+            position: "fixed",
+            inset: "0",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            marginTop: "50px",
-            flexDirection: "column"
+            padding: "16px",
+            backgroundColor: "rgba(11, 15, 23, 0.72)",
+            zIndex: "1000"
         },
         {
-            fontSize: "20px",
-            marginBottom: "5px"
-        },
-        {
-            textAlign: "center",
-            fontSize: "15px",
-            color: "white",
-            marginBottom: "20px",
-            width: "80%",
-            height: "40px",
-            backgroundColor: "#2d2d2d",
-            transition: "all 0.25s",
-            border: "1px solid gray"
-        },
-        {
-            textAlign: "center",
-            fontSize: "15px",
-            color: "white",
-            marginBottom: "20px",
-            width: "80%",
-            height: "40px",
-            backgroundColor: "#2d2d2d",
-            border: "1px solid gray"
-        },
-        {
-            backgroundColor: "#2d2d2d",
-            width: "100px",
-            color: "white",
-            border: "2px solid #33CCFF",
-            borderRadius: "10px",
-            marginRight: "10px",
-            transition: "all 0.5s"
+            width: "min(500px, 100%)",
+            maxHeight: "calc(100vh - 32px)",
+            overflowY: "auto",
+            boxShadow: "0 20px 60px rgba(0, 0, 0, 0.5)"
         }
     ];
 
@@ -205,6 +172,7 @@ function CriacaoHabito() {
     adicionarStyle(0, divDeAdicionarHabito, styleDiv);
 
     const divForm = document.createElement('form');
+    divForm.className = "card-formulario";
     adicionarStyle(1, divForm, styleDiv);
 
     divForm.addEventListener("submit", function(event) {
@@ -229,34 +197,24 @@ function CriacaoHabito() {
     ];
 
     for (const i of informacoesParaForm) {
-        if (i.tipo == "texto") {
-            const divLabel = document.createElement('label');
-            divLabel.textContent = i.nomeLabel;
-            adicionarStyle(2, divLabel, styleDiv);
+        const grupoCampo = document.createElement('div');
+        grupoCampo.className = "grupo-campo";
 
+        const divLabel = document.createElement('label');
+        divLabel.textContent = i.nomeLabel;
+        divLabel.htmlFor = i.id;
+
+        if (i.tipo == "texto") {
             const divInput = document.createElement('input');
             divInput.id = i.id;
             divInput.type = "text";
             divInput.placeholder = i.NomePlaceholder;
 
-            adicionarStyle(3, divInput, styleDiv);
-            divInput.addEventListener("mouseenter", function() {
-                divInput.style.backgroundColor = "#414141";
-            });
-            divInput.addEventListener("mouseleave", function() {
-                divInput.style.backgroundColor = "#2d2d2d";
-            });
-
-            divForm.appendChild(divLabel);
-            divForm.appendChild(divInput);
+            grupoCampo.appendChild(divLabel);
+            grupoCampo.appendChild(divInput);
         } else {
-            const divLabel = document.createElement('label');
-            divLabel.textContent = i.nomeLabel;
-            adicionarStyle(2, divLabel, styleDiv);
-
             const divSelect = document.createElement('select');
             divSelect.id = i.id;
-            adicionarStyle(4, divSelect, styleDiv);
 
             for (const valorHabito of i.valor) {
                 const Option = document.createElement("option");
@@ -264,42 +222,34 @@ function CriacaoHabito() {
                 Option.textContent = valorHabito;
                 divSelect.appendChild(Option);
             }
-            divForm.appendChild(divLabel);
-            divForm.appendChild(divSelect);
+
+            grupoCampo.appendChild(divLabel);
+            grupoCampo.appendChild(divSelect);
         }
+
+        divForm.appendChild(grupoCampo);
     }
 
     const divBotoes = document.createElement('div');
+    divBotoes.className = "acoes-formulario";
+    divBotoes.style.justifyContent = "center";
     const botaoCriar = document.createElement('button');
     botaoCriar.type = "submit";
+    botaoCriar.className = "btn-primario";
     botaoCriar.textContent = "Criar";
-    adicionarStyle(5, botaoCriar, styleDiv);
+    botaoCriar.style.flex = "1 1 140px";
+    botaoCriar.style.maxWidth = "140px";
 
     const botaoCancelar = document.createElement('button');
+    botaoCancelar.type = "button";
+    botaoCancelar.className = "btn-neutro";
     botaoCancelar.textContent = "Cancelar";
-    adicionarStyle(5, botaoCancelar, styleDiv);
+    botaoCancelar.style.flex = "1 1 140px";
+    botaoCancelar.style.maxWidth = "140px";
 
     botaoCancelar.onclick = function() {
         divDeAdicionarHabito.remove();
     }
-
-    botaoCancelar.addEventListener("mouseenter", function() {
-        botaoCancelar.style.borderColor = "white";
-        botaoCancelar.style.backgroundColor = "#414141";
-    })
-    botaoCancelar.addEventListener("mouseleave", function() {
-        botaoCancelar.style.borderColor = "#33CCFF";
-        botaoCancelar.style.backgroundColor = "#2d2d2d";
-    })
-
-    botaoCriar.addEventListener("mouseenter", function() {
-        botaoCriar.style.borderColor = "white";
-        botaoCriar.style.backgroundColor = "#414141";
-    })
-    botaoCriar.addEventListener("mouseleave", function() {
-        botaoCriar.style.borderColor = "#33CCFF";
-        botaoCriar.style.backgroundColor = "#2d2d2d";
-    })
 
     divBotoes.appendChild(botaoCancelar);
     divBotoes.appendChild(botaoCriar);
@@ -309,8 +259,35 @@ function CriacaoHabito() {
     main.appendChild(divDeAdicionarHabito);
 }
 
+// função para adicionar um hábito, verificando se o modal já está aberto
 function AdicionarHabito() {
     if (document.getElementById("modal-criacao-habito")) return;
 
     CriacaoHabito();
+}
+
+// função para ativar a tela selecionada e desativar a tela atual
+let TelaAtiva = document.getElementById("visao-geral");
+function AtivarTela(id, botãoId) {
+    const TelaParaAtivar = document.getElementById(id);
+
+    if (!TelaParaAtivar) return;
+    if (TelaParaAtivar == TelaAtiva) return;
+
+    TelaAtiva.style.display = "none";
+    TelaParaAtivar.style.display = "block";
+
+    const botãoClicado = document.getElementById(botãoId);
+    botãoClicado.style.background = "var(--azul-grad)";
+    botãoClicado.style.borderColor = "transparent";
+    botãoClicado.style.color = "#fff";
+    botãoClicado.style.fontWeight = "600";
+    botãoClicado.style.boxShadow = "0 0 22px rgba(0, 200, 255, 0.35)";
+
+    const botãoAntigo = document.getElementById(`link-${TelaAtiva.id}`);
+    botãoAntigo.style.background = 'linear-gradient(180deg, #202a3b, #19212f)';
+    botãoAntigo.style.color = 'var(--texto)';
+    botãoAntigo.style.boxShadow = "0 4px 14px rgba(0, 0, 0, 0.35)";
+
+    TelaAtiva = TelaParaAtivar;
 }
