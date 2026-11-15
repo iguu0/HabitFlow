@@ -119,8 +119,7 @@ O projeto está organizado da seguinte maneira:
 ```text
 HabitFlow/
 │
-├──app.html
-│
+├── app.html
 ├── index.html
 │
 ├── css/
@@ -129,6 +128,10 @@ HabitFlow/
 ├── js/
 │   └── script.js
 │
+├── img/
+│   ├── editar.jpeg
+│   └── lixeira.png
+│
 └── README.md
 ```
 
@@ -136,10 +139,12 @@ HabitFlow/
 
 | Arquivo/Pasta | Responsabilidade |
 |---|---|
-| `index.html` | Tela inicial.. |
+| `index.html` | Tela inicial da aplicação. |
 | `app.html` | Estrutura e organização dos elementos da aplicação. |
 | `css/style.css` | Estilização, layout e identidade visual do sistema. |
 | `js/script.js` | Lógica, interações e funcionalidades da aplicação. |
+| `img/editar.jpeg` | Imagem de edição disponível para uso na interface. |
+| `img/lixeira.png` | Ícone usado para excluir hábitos da lista. |
 | `README.md` | Documentação e planejamento do projeto. |
 
 ## ⚙️ 8. Tecnologias Utilizadas
@@ -167,18 +172,16 @@ HabitFlow/
 - [x] Prevenção de abertura de formulários duplicados.
 - [x] Estrutura visual do checklist.
 - [x] Interface de perfil do usuário.
+- [x] Aprimoramento da responsividade.
+- [x] Implementação completa da edição e exclusão de hábitos.
+- [x] Atualização automática da barra de progresso geral.
 
 ### Funcionalidades pendentes
 
-- [ ] Implementação completa da edição e exclusão de hábitos.
 - [ ] Integração dos dados de descrição e categoria na listagem.
-- [ ] Atualização automática da barra de progresso geral.
-- [ ] Atualização dos indicadores de hábitos ativos e dias acumulados.
 - [ ] Implementação completa do gerenciamento de tarefas.
-- [ ] Atualização automática do progresso do checklist.
 - [ ] Implementação de filtros e buscas funcionais.
 - [ ] Armazenamento persistente dos dados.
-- [ ] Aprimoramento da responsividade.
 
 ## 📦 10. Escopo da Primeira Entrega
 
