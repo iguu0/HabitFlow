@@ -1,3 +1,4 @@
+// Elementos e informações usados pela tela.
 const habitos = document.getElementById("lista-habitos-hoje");
 const vazioHoje = document.getElementById("mensagem-vazio-hoje");
 const main = document.getElementById("main-tela");
@@ -7,19 +8,28 @@ let informacoesDeHabitosAdicionados = {
     habitosFeitos: 0,
     checagemConcluidos: {},
     categorias: {
-        "Saúde": 0, "Carreira": 0, "Hobby": 0, "Estudo": 0, "Outro": 0
+        "Saúde": 0,
+        "Carreira": 0,
+        "Hobby": 0,
+        "Estudo": 0,
+        "Outro": 0
+    }
+};
+
+// Aplica vários estilos a um elemento.
+function adicionarStyle(elemento, estilos) {
+    for (const propriedade in estilos) {
+        elemento.style[propriedade] = estilos[propriedade];
     }
 }
 
-function adicionarStyle(Index, Modificado, style) {
-    for (let i in style[Index]) {
-        Modificado.style[i] = style[Index][i];
-    }
-}
+// Atualiza os contadores e a exibição do progresso.
+function MudarBarra(contador, quantidade, categoria) {
+    informacoesDeHabitosAdicionados[contador] += quantidade;
 
-function MudarBarra(OqueVaiMudar, quantidade, Tipo) {
-    informacoesDeHabitosAdicionados[OqueVaiMudar] += quantidade;
-    informacoesDeHabitosAdicionados.categorias[Tipo] += quantidade;
+    if (categoria) {
+        informacoesDeHabitosAdicionados.categorias[categoria] += quantidade;
+    }
 
     const contadorConcluidos = document.getElementById('contador-habitos-concluidos');
     const contadorTotal = document.getElementById('contador-habitos-total');
@@ -31,9 +41,10 @@ function MudarBarra(OqueVaiMudar, quantidade, Tipo) {
     const feitas = informacoesDeHabitosAdicionados.habitosFeitos;
     const porcentagem = totais > 0 ? Math.round((feitas / totais) * 100) : 0;
     let totalCategorias = 0;
+
     for (const categoria in informacoesDeHabitosAdicionados.categorias) {
         if (informacoesDeHabitosAdicionados.categorias[categoria] > 0) {
-            totalCategorias += 1;
+            totalCategorias++;
         }
     }
 
@@ -46,7 +57,7 @@ function MudarBarra(OqueVaiMudar, quantidade, Tipo) {
     tamanhoBarra.style.width = `${porcentagem}%`;
     graficoPizza.style.background = `conic-gradient(var(--azul) 0% ${porcentagem}%, var(--borda) ${porcentagem}% 100%)`;
 
-    if (informacoesDeHabitosAdicionados.habitos == 0) {
+    if (informacoesDeHabitosAdicionados.habitos === 0) {
         vazioHoje.style.display = "";
         vazioHoje.style.width = "100%";
         vazioHoje.style.height = "100%";
@@ -62,44 +73,43 @@ function MudarBarra(OqueVaiMudar, quantidade, Tipo) {
     }
 }
 
+// Criação dos itens de hábito e ações de cada item.
 function AdicionarHabitoNaDiv(nomeHabito, tipo) {
     if (vazioHoje) {
-        vazioHoje.style.display = "none"; 
+        vazioHoje.style.display = "none";
     }
 
-    const style = [
-        {
-            backgroundColor: "#131a27",
-            alignItems: "center",
-            borderRadius: "10px",
-            borderWidth: "1px",
-            borderStyle: "none",
-            marginTop: "5px",
-            paddingTop: "8px"
-        },
-        {
-            width: "95%",
-            display: "flex",
-            margin: "0 auto",
-            border: "none"
-        },
-        {
-            backgroundColor: "white",
-            marginRight: "10px",
-            height: "25px",
-            width: "25px",
-            border: "none",
-            borderRadius: "15%",
-            cursor: "pointer",
-            transition: "all 0.2s ease"
-        }
-    ]
+    const estiloLista = {
+        backgroundColor: "#131a27",
+        alignItems: "center",
+        borderRadius: "10px",
+        borderWidth: "1px",
+        borderStyle: "none",
+        marginTop: "5px",
+        paddingTop: "8px"
+    };
+    const estiloItem = {
+        width: "95%",
+        display: "flex",
+        margin: "0 auto",
+        border: "none"
+    };
+    const estiloBotaoConcluir = {
+        backgroundColor: "white",
+        marginRight: "10px",
+        height: "25px",
+        width: "25px",
+        border: "none",
+        borderRadius: "15%",
+        cursor: "pointer",
+        transition: "all 0.2s ease"
+    };
 
-    adicionarStyle(0, habitos, style);
+    adicionarStyle(habitos, estiloLista);
 
     const habitoNovo = document.createElement('li');
     habitoNovo.id = `habito${informacoesDeHabitosAdicionados.habitos}`;
-    adicionarStyle(1, habitoNovo, style);
+    adicionarStyle(habitoNovo, estiloItem);
 
     const containerTexto = document.createElement('div');
     containerTexto.className = "grupo-campo";
@@ -118,7 +128,7 @@ function AdicionarHabitoNaDiv(nomeHabito, tipo) {
     tipoSpan.style.color = "#666";
 
     const botaoConcluir = document.createElement('button');
-    adicionarStyle(2, botaoConcluir, style);
+    adicionarStyle(botaoConcluir, estiloBotaoConcluir);
 
     botaoConcluir.onclick = function() {
         if (this.style.backgroundColor !== "rgb(51, 204, 255)") {
@@ -127,7 +137,7 @@ function AdicionarHabitoNaDiv(nomeHabito, tipo) {
             informacoesDeHabitosAdicionados.checagemConcluidos[habitoNovo.id] = true;
         } else {
             this.style.backgroundColor = "white";
-            MudarBarra('habitosFeitos', -1)
+            MudarBarra('habitosFeitos', -1);
             delete informacoesDeHabitosAdicionados.checagemConcluidos[habitoNovo.id];
         }
     };
@@ -190,11 +200,11 @@ function AdicionarHabitoNaDiv(nomeHabito, tipo) {
 
     apagar.onclick = function() {
         habitoNovo.remove();
-        MudarBarra('habitos', -1);
-        
+        MudarBarra('habitos', -1, tipo);
+
         if (informacoesDeHabitosAdicionados.checagemConcluidos[habitoNovo.id]) {
-            MudarBarra('habitosFeitos', -1)
-            delete informacoesDeHabitosAdicionados.checagemConcluidos[habitoNovo.id]
+            MudarBarra('habitosFeitos', -1);
+            delete informacoesDeHabitosAdicionados.checagemConcluidos[habitoNovo.id];
         }
     };
 
@@ -214,97 +224,112 @@ function AdicionarHabitoNaDiv(nomeHabito, tipo) {
     habitoNovo.appendChild(acoesTarefa);
 
     habitos.appendChild(habitoNovo);
-    MudarBarra('habitos', 1);
+    MudarBarra('habitos', 1, tipo);
 }
 
+// Monta o formulário para criar um hábito.
 function CriacaoHabito() {
-    const styleDiv = [
-        {
-            position: "fixed",
-            inset: "0",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "16px",
-            backgroundColor: "rgba(11, 15, 23, 0.72)",
-            zIndex: "1000"
-        },
-        {
-            width: "min(500px, 100%)",
-            maxHeight: "calc(100vh - 32px)",
-            overflowY: "auto",
-            boxShadow: "0 20px 60px rgba(0, 0, 0, 0.5)"
-        }
-    ];
+    const estiloModal = {
+        position: "fixed",
+        inset: "0",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "16px",
+        backgroundColor: "rgba(11, 15, 23, 0.72)",
+        zIndex: "1000"
+    };
+    const estiloFormulario = {
+        width: "min(500px, 100%)",
+        maxHeight: "calc(100vh - 32px)",
+        overflowY: "auto",
+        boxShadow: "0 20px 60px rgba(0, 0, 0, 0.5)"
+    };
 
-    const divDeAdicionarHabito = document.createElement('div');
-    divDeAdicionarHabito.id = "modal-criacao-habito";
-    adicionarStyle(0, divDeAdicionarHabito, styleDiv);
+    const modal = document.createElement('div');
+    modal.id = "modal-criacao-habito";
+    adicionarStyle(modal, estiloModal);
 
-    const divForm = document.createElement('form');
-    divForm.className = "card-formulario";
-    adicionarStyle(1, divForm, styleDiv);
+    const formulario = document.createElement('form');
+    formulario.className = "card-formulario";
+    adicionarStyle(formulario, estiloFormulario);
 
-    divForm.addEventListener("submit", function(event) {
+    formulario.addEventListener("submit", function(event) {
         event.preventDefault();
 
         const nomeInput = document.getElementById("InputNomeHabito");
         const nomeHabito = nomeInput ? nomeInput.value.trim() : "";
         if (!nomeHabito) return;
 
-        const SelectDoTipo = document.getElementById("SelectTipoHábito");
-        const tipoSelecionado = SelectDoTipo ? SelectDoTipo.options[SelectDoTipo.selectedIndex].text.trim() : "";
+        const selectTipo = document.getElementById("SelectTipoHábito");
+        const tipoSelecionado = selectTipo
+            ? selectTipo.options[selectTipo.selectedIndex].text.trim()
+            : "";
+
         if (!tipoSelecionado) return;
 
-        informacoesDeHabitosAdicionados.categorias[tipoSelecionado] += 1;
-
         AdicionarHabitoNaDiv(nomeHabito, tipoSelecionado);
-        divDeAdicionarHabito.remove();
+        modal.remove();
     });
 
-    const informacoesParaForm = [
-        {nomeLabel: "Nome do hábito:", NomePlaceholder: "Digite o hábito...", id: "InputNomeHabito", tipo: "texto"},
-        {nomeLabel: "Descrição:", NomePlaceholder: "Digite a descrição...", id: "InputDescriçãoHabito", tipo: "texto"},
-        {nomeLabel: "Tipo do hábito:", id: "SelectTipoHábito", valor: ["Saúde", "Carreira", "Hobby", "Estudo", "Outro"]}
+    const camposFormulario = [
+        {
+            nomeLabel: "Nome do hábito:",
+            placeholder: "Digite o hábito...",
+            id: "InputNomeHabito",
+            tipo: "texto"
+        },
+        {
+            nomeLabel: "Descrição:",
+            placeholder: "Digite a descrição...",
+            id: "InputDescriçãoHabito",
+            tipo: "texto"
+        },
+        {
+            nomeLabel: "Tipo do hábito:",
+            id: "SelectTipoHábito",
+            opcoes: ["Saúde", "Carreira", "Hobby", "Estudo", "Outro"]
+        }
     ];
 
-    for (const i of informacoesParaForm) {
+    for (const campo of camposFormulario) {
         const grupoCampo = document.createElement('div');
         grupoCampo.className = "grupo-campo";
 
-        const divLabel = document.createElement('label');
-        divLabel.textContent = i.nomeLabel;
-        divLabel.htmlFor = i.id;
+        const label = document.createElement('label');
+        label.textContent = campo.nomeLabel;
+        label.htmlFor = campo.id;
 
-        if (i.tipo == "texto") {
-            const divInput = document.createElement('input');
-            divInput.id = i.id;
-            divInput.type = "text";
-            divInput.placeholder = i.NomePlaceholder;
+        if (campo.tipo === "texto") {
+            const input = document.createElement('input');
+            input.id = campo.id;
+            input.type = "text";
+            input.placeholder = campo.placeholder;
 
-            grupoCampo.appendChild(divLabel);
-            grupoCampo.appendChild(divInput);
+            grupoCampo.appendChild(label);
+            grupoCampo.appendChild(input);
         } else {
-            const divSelect = document.createElement('select');
-            divSelect.id = i.id;
+            const select = document.createElement('select');
+            select.id = campo.id;
 
-            for (const valorHabito of i.valor) {
-                const Option = document.createElement("option");
-                Option.value = valorHabito;
-                Option.textContent = valorHabito;
-                divSelect.appendChild(Option);
+            for (const opcaoTipo of campo.opcoes) {
+                const opcao = document.createElement("option");
+                opcao.value = opcaoTipo;
+                opcao.textContent = opcaoTipo;
+                select.appendChild(opcao);
             }
 
-            grupoCampo.appendChild(divLabel);
-            grupoCampo.appendChild(divSelect);
+            grupoCampo.appendChild(label);
+            grupoCampo.appendChild(select);
         }
 
-        divForm.appendChild(grupoCampo);
+        formulario.appendChild(grupoCampo);
     }
 
-    const divBotoes = document.createElement('div');
-    divBotoes.className = "acoes-formulario";
-    divBotoes.style.justifyContent = "center";
+    const grupoBotoes = document.createElement('div');
+    grupoBotoes.className = "acoes-formulario";
+    grupoBotoes.style.justifyContent = "center";
+
     const botaoCriar = document.createElement('button');
     botaoCriar.type = "submit";
     botaoCriar.className = "btn-primario";
@@ -320,44 +345,46 @@ function CriacaoHabito() {
     botaoCancelar.style.maxWidth = "140px";
 
     botaoCancelar.onclick = function() {
-        divDeAdicionarHabito.remove();
-    }
+        modal.remove();
+    };
 
-    divBotoes.appendChild(botaoCancelar);
-    divBotoes.appendChild(botaoCriar);
-    divForm.appendChild(divBotoes);
+    grupoBotoes.appendChild(botaoCancelar);
+    grupoBotoes.appendChild(botaoCriar);
+    formulario.appendChild(grupoBotoes);
 
-    divDeAdicionarHabito.appendChild(divForm);
-    main.appendChild(divDeAdicionarHabito);
+    modal.appendChild(formulario);
+    main.appendChild(modal);
 }
 
+// Abre o formulário, sem criar mais de um modal ao mesmo tempo.
 function AdicionarHabito() {
     if (document.getElementById("modal-criacao-habito")) return;
 
     CriacaoHabito();
 }
 
-let TelaAtiva = document.getElementById("visao-geral");
-function AtivarTela(id, botãoId) {
-    const TelaParaAtivar = document.getElementById(id);
+// Alterna entre as telas do aplicativo.
+let telaAtiva = document.getElementById("visao-geral");
+function AtivarTela(idTela, idBotao) {
+    const telaParaAtivar = document.getElementById(idTela);
 
-    if (!TelaParaAtivar) return;
-    if (TelaParaAtivar == TelaAtiva) return;
+    if (!telaParaAtivar) return;
+    if (telaParaAtivar === telaAtiva) return;
 
-    TelaAtiva.style.display = "none";
-    TelaParaAtivar.style.display = "block";
+    telaAtiva.style.display = "none";
+    telaParaAtivar.style.display = "block";
 
-    const botãoClicado = document.getElementById(botãoId);
-    botãoClicado.style.background = "var(--azul-grad)";
-    botãoClicado.style.borderColor = "transparent";
-    botãoClicado.style.color = "#fff";
-    botãoClicado.style.fontWeight = "600";
-    botãoClicado.style.boxShadow = "0 0 22px rgba(0, 200, 255, 0.35)";
+    const botaoClicado = document.getElementById(idBotao);
+    botaoClicado.style.background = "var(--azul-grad)";
+    botaoClicado.style.borderColor = "transparent";
+    botaoClicado.style.color = "#fff";
+    botaoClicado.style.fontWeight = "600";
+    botaoClicado.style.boxShadow = "0 0 22px rgba(0, 200, 255, 0.35)";
 
-    const botãoAntigo = document.getElementById(`link-${TelaAtiva.id}`);
-    botãoAntigo.style.background = 'linear-gradient(180deg, #202a3b, #19212f)';
-    botãoAntigo.style.color = 'var(--texto)';
-    botãoAntigo.style.boxShadow = "0 4px 14px rgba(0, 0, 0, 0.35)";
+    const botaoAntigo = document.getElementById(`link-${telaAtiva.id}`);
+    botaoAntigo.style.background = 'linear-gradient(180deg, #202a3b, #19212f)';
+    botaoAntigo.style.color = 'var(--texto)';
+    botaoAntigo.style.boxShadow = "0 4px 14px rgba(0, 0, 0, 0.35)";
 
-    TelaAtiva = TelaParaAtivar;
+    telaAtiva = telaParaAtivar;
 }
