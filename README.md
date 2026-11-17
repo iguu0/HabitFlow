@@ -143,7 +143,7 @@ HabitFlow/
 | `app.html` | Estrutura e organização dos elementos da aplicação. |
 | `css/style.css` | Estilização, layout e identidade visual do sistema. |
 | `js/script.js` | Lógica, interações e funcionalidades da aplicação. |
-| `img/editar.jpeg` | Imagem de edição disponível para uso na interface. |
+| `img/editar.png` | Ícone usado para editar tarefas do checklist. |
 | `img/lixeira.png` | Ícone usado para excluir hábitos da lista. |
 | `README.md` | Documentação e planejamento do projeto. |
 

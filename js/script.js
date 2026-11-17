@@ -5,18 +5,21 @@ const main = document.getElementById("main-tela");
 let informacoesDeHabitosAdicionados = {
     habitos: 0,
     habitosFeitos: 0,
-    checagemConcluidos: {}
+    checagemConcluidos: {},
+    categorias: {
+        "Saúde": 0, "Carreira": 0, "Hobby": 0, "Estudo": 0, "Outro": 0
+    }
 }
-// função para adicionar estilos a um elemento
+
 function adicionarStyle(Index, Modificado, style) {
     for (let i in style[Index]) {
         Modificado.style[i] = style[Index][i];
     }
 }
 
-// função para atualizar a barra de progresso e os contadores
-function MudarBarra(OqueVaiMudar, quantidade) {
+function MudarBarra(OqueVaiMudar, quantidade, Tipo) {
     informacoesDeHabitosAdicionados[OqueVaiMudar] += quantidade;
+    informacoesDeHabitosAdicionados.categorias[Tipo] += quantidade;
 
     const contadorConcluidos = document.getElementById('contador-habitos-concluidos');
     const contadorTotal = document.getElementById('contador-habitos-total');
@@ -27,10 +30,18 @@ function MudarBarra(OqueVaiMudar, quantidade) {
     const totais = informacoesDeHabitosAdicionados.habitos;
     const feitas = informacoesDeHabitosAdicionados.habitosFeitos;
     const porcentagem = totais > 0 ? Math.round((feitas / totais) * 100) : 0;
+    let totalCategorias = 0;
+    for (const categoria in informacoesDeHabitosAdicionados.categorias) {
+        if (informacoesDeHabitosAdicionados.categorias[categoria] > 0) {
+            totalCategorias += 1;
+        }
+    }
 
     porcentagemTexto.textContent = `${porcentagem}%`;
     contadorConcluidos.textContent = `${feitas}`;
     contadorTotal.textContent = `${totais}`;
+    document.getElementById('indicador-habitos-ativos').textContent = `${feitas}`;
+    document.getElementById('indicador-categorias').textContent = `${totalCategorias}`;
 
     tamanhoBarra.style.width = `${porcentagem}%`;
     graficoPizza.style.background = `conic-gradient(var(--azul) 0% ${porcentagem}%, var(--borda) ${porcentagem}% 100%)`;
@@ -50,7 +61,7 @@ function MudarBarra(OqueVaiMudar, quantidade) {
         habitos.style.paddingTop = "";
     }
 }
-// função para adicionar um hábito à lista de hábitos
+
 function AdicionarHabitoNaDiv(nomeHabito, tipo) {
     if (vazioHoje) {
         vazioHoje.style.display = "none"; 
@@ -91,8 +102,11 @@ function AdicionarHabitoNaDiv(nomeHabito, tipo) {
     adicionarStyle(1, habitoNovo, style);
 
     const containerTexto = document.createElement('div');
+    containerTexto.className = "grupo-campo";
     containerTexto.style.display = "flex";
     containerTexto.style.flexDirection = "column";
+    containerTexto.style.gap = "0";
+    containerTexto.style.marginBottom = "0";
 
     const textoSpan = document.createElement('span');
     textoSpan.textContent = nomeHabito;
@@ -118,12 +132,60 @@ function AdicionarHabitoNaDiv(nomeHabito, tipo) {
         }
     };
 
+    const editar = document.createElement('img');
+    editar.src = "img/editar.png";
+    editar.alt = "Botão de editar tarefa";
+    editar.style.width = "30px";
+    editar.style.cursor = "pointer";
+
+    editar.onclick = function() {
+        if (containerTexto.querySelector(".input-editar-tarefa")) return;
+
+        const inputEdicao = document.createElement('input');
+        inputEdicao.type = "text";
+        inputEdicao.className = "input-editar-tarefa";
+        inputEdicao.setAttribute("aria-label", "Nome da tarefa");
+        inputEdicao.value = textoSpan.textContent;
+
+        const flexAnterior = containerTexto.style.flex;
+        const larguraMinimaAnterior = containerTexto.style.minWidth;
+        let edicaoFinalizada = false;
+
+        const finalizarEdicao = function(salvar) {
+            if (edicaoFinalizada) return;
+            edicaoFinalizada = true;
+
+            const novoNome = inputEdicao.value.trim();
+            if (salvar && novoNome) textoSpan.textContent = novoNome;
+
+            containerTexto.replaceChild(textoSpan, inputEdicao);
+            containerTexto.style.flex = flexAnterior;
+            containerTexto.style.minWidth = larguraMinimaAnterior;
+        };
+
+        inputEdicao.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                finalizarEdicao(true);
+            } else if (event.key === "Escape") {
+                finalizarEdicao(false);
+            }
+        });
+        inputEdicao.addEventListener("blur", function() {
+            finalizarEdicao(true);
+        });
+
+        containerTexto.style.flex = "1";
+        containerTexto.style.minWidth = "0";
+        containerTexto.replaceChild(inputEdicao, textoSpan);
+        inputEdicao.focus();
+        inputEdicao.select();
+    };
+
     const apagar = document.createElement('img');
     apagar.src = "img/lixeira.png";
-    apagar.alt = "Apagar hábito";
-
-    apagar.style.width = "20px";
-    apagar.style.marginLeft = "auto";
+    apagar.alt = "Botão de apagar tarefa";
+    apagar.style.width = "25px";
     apagar.style.cursor = "pointer";
 
     apagar.onclick = function() {
@@ -141,12 +203,20 @@ function AdicionarHabitoNaDiv(nomeHabito, tipo) {
 
     habitoNovo.appendChild(botaoConcluir);
     habitoNovo.appendChild(containerTexto);
-    habitoNovo.appendChild(apagar);
+
+    const acoesTarefa = document.createElement('div');
+    acoesTarefa.style.display = "flex";
+    acoesTarefa.style.alignItems = "center";
+    acoesTarefa.style.gap = "4px";
+    acoesTarefa.style.marginLeft = "auto";
+    acoesTarefa.appendChild(editar);
+    acoesTarefa.appendChild(apagar);
+    habitoNovo.appendChild(acoesTarefa);
 
     habitos.appendChild(habitoNovo);
     MudarBarra('habitos', 1);
 }
-// função para criar o modal de criação de hábito
+
 function CriacaoHabito() {
     const styleDiv = [
         {
@@ -185,6 +255,8 @@ function CriacaoHabito() {
         const SelectDoTipo = document.getElementById("SelectTipoHábito");
         const tipoSelecionado = SelectDoTipo ? SelectDoTipo.options[SelectDoTipo.selectedIndex].text.trim() : "";
         if (!tipoSelecionado) return;
+
+        informacoesDeHabitosAdicionados.categorias[tipoSelecionado] += 1;
 
         AdicionarHabitoNaDiv(nomeHabito, tipoSelecionado);
         divDeAdicionarHabito.remove();
@@ -259,14 +331,12 @@ function CriacaoHabito() {
     main.appendChild(divDeAdicionarHabito);
 }
 
-// função para adicionar um hábito, verificando se o modal já está aberto
 function AdicionarHabito() {
     if (document.getElementById("modal-criacao-habito")) return;
 
     CriacaoHabito();
 }
 
-// função para ativar a tela selecionada e desativar a tela atual
 let TelaAtiva = document.getElementById("visao-geral");
 function AtivarTela(id, botãoId) {
     const TelaParaAtivar = document.getElementById(id);
