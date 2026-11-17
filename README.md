@@ -129,7 +129,7 @@ HabitFlow/
 │   └── script.js
 │
 ├── img/
-│   ├── editar.jpeg
+│   ├── editar.png
 │   └── lixeira.png
 │
 └── README.md
