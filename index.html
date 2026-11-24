@@ -3,29 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HabitFlow - Construa os seus Habitos</title>
+  <title>HabitFlow - Construa os seus Hábitos</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="layout-landing">
+<body class="pagina-inicial">
 
-  <main class="landing-container">
-    <section class="hero-section">
-      <div class="hero-conteudo">
-        <h1 class="hero-titulo">HabitFlow</h1>
-        <p class="hero-slogan">CONSTRUA OS SEUS HABITOS</p>
-        <p class="hero-descricao">Monitore e conquiste seus objetivos diarios com uma interface simples, intuitiva e organizada.</p>
-        
-        <div class="hero-acoes">
-          <a href="app.html" class="btn-primario btn-grande" id="btn-entrar-app">Entrar / Acessar Painel</a>
-          <a href="app.html" class="btn-secundario btn-grande" id="btn-criar-conta">Crie sua conta</a>
-        </div>
-      </div>
-    </section>
+  <main class="tela-inicial" aria-label="Tela inicial do HabitFlow">
+    <h1 class="sr-only">HabitFlow - Construa os seus hábitos</h1>
+    <button type="button" class="btn-tela" id="btn-login">Login</button>
+    <a href="app.html" class="btn-tela" id="btn-entrar">Entrar</a>
   </main>
 
-  <footer class="landing-footer">
-    <p>&copy; 2026 HabitFlow. Todos os direitos reservados.</p>
-  </footer>
+  <div class="modal-fundo" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+    <div class="modal" id="modal-caixa">
+      <button type="button" class="fechar" id="btn-fechar" aria-label="Fechar">&times;</button>
+      <h2 id="modal-titulo">Acesse sua conta</h2>
+      <p class="sub" id="modal-sub">Entre com seu e-mail e senha.</p>
 
+      <div class="abas">
+        <button type="button" class="aba ativa" id="aba-login">Login</button>
+        <button type="button" class="aba" id="aba-cadastro">Criar conta</button>
+      </div>
+
+      <form id="form-auth" novalidate>
+        <div class="campo-nome">
+          <label for="auth-nome">Nome</label>
+          <input type="text" id="auth-nome" autocomplete="name" placeholder="Seu nome">
+        </div>
+        <label for="auth-email">E-mail</label>
+        <input type="email" id="auth-email" autocomplete="email" placeholder="voce@email.com" required>
+        <label for="auth-senha">Senha</label>
+        <input type="password" id="auth-senha" autocomplete="current-password" placeholder="Mínimo 4 caracteres" required>
+        <p class="erro" id="auth-erro" role="alert"></p>
+        <button type="submit" class="btn-enviar" id="btn-enviar">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/script.js" defer></script>
 </body>
 </html>
