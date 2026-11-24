@@ -436,3 +436,144 @@ input:focus, select:focus { border-color: var(--azul); outline: none; box-shadow
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }
+
+/* =====================================================================
+   TELA INICIAL (index.html)
+   Tudo escopado em body.pagina-inicial para não afetar o app.html
+   ===================================================================== */
+
+html:has(body.pagina-inicial) { color-scheme: light; height: 100%; }
+
+body.pagina-inicial {
+  height: 100%;
+  background: #eaf5fd;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Imagem esticada: ocupa a janela inteira (100% x 100%) */
+.tela-inicial {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: url("../img/tela-inicial.jpg") center / 100% 100% no-repeat;
+  container-type: size;
+}
+
+/* Botões reais posicionados sobre os botões da arte */
+.btn-tela {
+  position: absolute;
+  left: 32.4%;
+  width: 35.4%;
+  height: 8.6%;
+  border: 0;
+  border-radius: 2.2cqw;
+  background: #30cafc;
+  color: #111;
+  font: 700 min(1.9cqw, 2.7cqh)/1 "Segoe UI", Roboto, Arial, sans-serif;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .15s, filter .15s, box-shadow .15s;
+}
+.btn-tela:hover { filter: brightness(1.07); transform: translateY(-2px); box-shadow: 0 .6cqw 1.6cqw rgba(0, 120, 200, .3); }
+.btn-tela:focus-visible { outline: 3px solid #0b4f8a; outline-offset: 3px; }
+#btn-login  { top: 72.4%; }
+#btn-entrar { top: 83.9%; }
+
+/* Modal de login / cadastro */
+.modal-fundo {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 40, 70, .55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 10;
+}
+.modal-fundo.aberto { display: flex; }
+
+.modal {
+  background: #fff;
+  color: #0b2a44;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 16px;
+  padding: 28px 24px 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .3);
+  position: relative;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+}
+.modal h2 { margin: 0 0 4px; font-size: 22px; color: #0b2a44; }
+.modal .sub { margin: 0 0 18px; font-size: 14px; color: #5b6b7a; }
+
+.modal .fechar {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: 0;
+  background: none;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  color: #5b6b7a;
+}
+
+.modal .abas { display: flex; gap: 6px; margin-bottom: 18px; background: #eaf5fd; padding: 4px; border-radius: 10px; }
+.modal .aba {
+  flex: 1;
+  border: 0;
+  background: none;
+  padding: 9px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: #3b5a75;
+  cursor: pointer;
+}
+.modal .aba.ativa { background: #30cafc; color: #111; }
+
+.modal label { display: block; font-size: 13px; font-weight: 600; color: #26425a; margin: 12px 0 5px; }
+.modal input {
+  width: 100%;
+  padding: 11px 12px;
+  font-size: 15px;
+  font-family: inherit;
+  background: #fff;
+  color: #0b2a44;
+  border: 1.5px solid #c5d8e8;
+  border-radius: 9px;
+}
+.modal input::placeholder { color: #8a9bab; }
+.modal input:focus { outline: none; border-color: #30cafc; box-shadow: 0 0 0 3px rgba(48, 202, 252, .25); }
+
+.modal .campo-nome { display: none; }
+.modal.modo-cadastro .campo-nome { display: block; }
+
+.modal .erro { min-height: 20px; margin: 10px 0 0; font-size: 13px; color: #c0392b; }
+
+.modal .btn-enviar {
+  width: 100%;
+  margin-top: 6px;
+  padding: 13px;
+  border: 0;
+  border-radius: 10px;
+  background: #30cafc;
+  color: #111;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.modal .btn-enviar:hover { filter: brightness(1.07); }
