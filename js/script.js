@@ -1,3 +1,86 @@
+(function () {
+  var modal = document.getElementById('modal');
+  if (!modal) return;
+
+  var USUARIOS = 'habitflow_usuarios';   
+  var SESSAO   = 'habitflow_usuario';    
+
+  var form = document.getElementById('form-auth');
+  var erro = document.getElementById('auth-erro');
+  var modo = 'login';
+
+  function ler(chave, padrao) {
+    try { return JSON.parse(localStorage.getItem(chave)) || padrao; } catch (e) { return padrao; }
+  }
+  function gravar(chave, valor) {
+    try { localStorage.setItem(chave, JSON.stringify(valor)); } catch (e) {}
+  }
+
+  function definirModo(novo) {
+    modo = novo;
+    var cad = modo === 'cadastro';
+    document.getElementById('modal-caixa').classList.toggle('modo-cadastro', cad);
+    document.getElementById('aba-login').classList.toggle('ativa', !cad);
+    document.getElementById('aba-cadastro').classList.toggle('ativa', cad);
+    document.getElementById('btn-enviar').textContent = cad ? 'Criar conta' : 'Entrar';
+    document.getElementById('modal-titulo').textContent = cad ? 'Crie sua conta' : 'Acesse sua conta';
+    document.getElementById('modal-sub').textContent = cad
+      ? 'Preencha os dados para começar a construir seus hábitos.'
+      : 'Entre com seu e-mail e senha.';
+    document.getElementById('auth-senha').autocomplete = cad ? 'new-password' : 'current-password';
+    erro.textContent = '';
+  }
+
+  function abrir(m) {
+    definirModo(m || 'login');
+    modal.classList.add('aberto');
+    setTimeout(function () {
+      document.getElementById(modo === 'cadastro' ? 'auth-nome' : 'auth-email').focus();
+    }, 50);
+  }
+  function fechar() { modal.classList.remove('aberto'); form.reset(); erro.textContent = ''; }
+
+  document.getElementById('btn-login').addEventListener('click', function () { abrir('login'); });
+  document.getElementById('btn-fechar').addEventListener('click', fechar);
+  document.getElementById('aba-login').addEventListener('click', function () { definirModo('login'); });
+  document.getElementById('aba-cadastro').addEventListener('click', function () { definirModo('cadastro'); });
+  modal.addEventListener('click', function (e) { if (e.target === modal) fechar(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') fechar(); });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var nome = document.getElementById('auth-nome').value.trim();
+    var email = document.getElementById('auth-email').value.trim().toLowerCase();
+    var senha = document.getElementById('auth-senha').value;
+    var usuarios = ler(USUARIOS, []);
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { erro.textContent = 'Informe um e-mail válido.'; return; }
+    if (senha.length < 4) { erro.textContent = 'A senha deve ter pelo menos 4 caracteres.'; return; }
+
+    var usuario;
+    if (modo === 'cadastro') {
+      if (!nome) { erro.textContent = 'Informe seu nome.'; return; }
+      if (usuarios.some(function (u) { return u.email === email; })) {
+        erro.textContent = 'Já existe uma conta com esse e-mail.'; return;
+      }
+      usuario = { nome: nome, email: email, senha: btoa(unescape(encodeURIComponent(senha))) };
+      usuarios.push(usuario);
+      gravar(USUARIOS, usuarios);
+    } else {
+      var cod = btoa(unescape(encodeURIComponent(senha)));
+      usuario = usuarios.filter(function (u) { return u.email === email && u.senha === cod; })[0];
+      if (!usuario) { erro.textContent = 'E-mail ou senha incorretos.'; return; }
+    }
+
+    gravar(SESSAO, { nome: usuario.nome, email: usuario.email });
+    window.location.href = 'app.html';
+  });
+})();
+
+
+/* =====================================================================
+   APP (app.html)
+   ===================================================================== */
 // Elementos e informações usados pela tela.
 const habitos = document.getElementById("lista-habitos-hoje");
 const vazioHoje = document.getElementById("mensagem-vazio-hoje");
@@ -159,18 +242,22 @@ function renderizarHabitos(
     concluidas = informacoesDeHabitosAdicionados.checagemConcluidos,
     filtro = filtroChecklist.value
 ) {
+    // O mapa "concluidas" registra quais hábitos foram marcados; o filtro vem do seletor da tela.
     const listaDeHabitos = informacoesDeHabitosAdicionados.infoHabitos;
     const habitosFiltrados = listaDeHabitos.filter(dadosHabito => {
         const concluido = Boolean(concluidas[dadosHabito.id]);
 
+        // Decide quais hábitos aparecem, sem apagar do cadastro os que ficam fora do filtro.
         if (filtro === "concluidas") return concluido;
         if (filtro === "pendentes") return !concluido;
         return true;
     });
 
+    // Remove os itens antigos e mantém a mensagem disponível para quando a lista ficar vazia.
     habitos.replaceChildren(vazioHoje);
 
     if (listaDeHabitos.length === 0) {
+        // Mostra a mensagem padrão quando ainda não existe nenhum hábito cadastrado.
         vazioHoje.textContent = "Nenhuma tarefa cadastrada no checklist. Clique abaixo para adicionar.";
         adicionarStyle(vazioHoje, ESTILOS.listaVazia);
         adicionarStyle(habitos, ESTILOS.listaRestaurada);
@@ -178,6 +265,7 @@ function renderizarHabitos(
     }
 
     if (habitosFiltrados.length === 0) {
+        // Informa quando há hábitos, mas nenhum corresponde ao filtro escolhido.
         vazioHoje.textContent = filtro === "concluidas"
             ? "Nenhuma tarefa concluída."
             : "Nenhuma tarefa pendente.";
@@ -189,6 +277,7 @@ function renderizarHabitos(
     adicionarStyle(vazioHoje, ESTILOS.mensagemVaziaOculta);
     adicionarStyle(habitos, ESTILOS.listaHabitos);
 
+    // Cria novamente na tela cada hábito que passou pelo filtro.
     for (const dadosHabito of habitosFiltrados) {
         const habitoNovo = document.createElement('li');
         habitoNovo.id = dadosHabito.id;
@@ -207,6 +296,7 @@ function renderizarHabitos(
         adicionarStyle(tipoSpan, ESTILOS.tipoHabito);
 
         const botaoConcluir = document.createElement('button');
+        // Mantém tamanho e animação e acrescenta o azul se o hábito já estiver concluído.
         adicionarStyle(botaoConcluir, {
             ...ESTILOS.botaoConcluir,
             ...(concluidas[dadosHabito.id] ? ESTILOS.botaoConcluirFeito : {})
@@ -216,6 +306,7 @@ function renderizarHabitos(
         botaoConcluir.onclick = function() {
             const concluidoAgora = !concluidas[dadosHabito.id];
 
+            // Salva a nova confirmação e atualiza os números do progresso.
             if (concluidoAgora) {
                 concluidas[dadosHabito.id] = true;
                 MudarBarra('habitosFeitos', 1);
@@ -224,6 +315,7 @@ function renderizarHabitos(
                 MudarBarra('habitosFeitos', -1);
             }
 
+            // Muda a cor no próprio botão para deixar a animação acontecer.
             adicionarStyle(
                 this,
                 concluidoAgora
@@ -238,6 +330,7 @@ function renderizarHabitos(
                 (filtroAtual === "pendentes" && concluidoAgora);
 
             if (deveOcultar) {
+                // Só redesenha depois da animação se o hábito não pertencer mais ao filtro atual.
                 timeoutRenderizacaoFiltro = setTimeout(
                     () => renderizarHabitos(concluidas),
                     DURACAO_TRANSICAO_CONCLUIR
@@ -251,6 +344,7 @@ function renderizarHabitos(
         adicionarStyle(editar, ESTILOS.iconeEditar);
 
         editar.onclick = function() {
+            // Evita abrir vários campos de edição para o mesmo hábito.
             if (containerTexto.querySelector(".input-editar-tarefa")) return;
 
             const inputEdicao = document.createElement('input');
@@ -265,6 +359,7 @@ function renderizarHabitos(
             };
             let edicaoFinalizada = false;
 
+            // Salva ou cancela a edição e restaura o layout do texto.
             const finalizarEdicao = function(salvar) {
                 if (edicaoFinalizada) return;
                 edicaoFinalizada = true;
@@ -303,6 +398,7 @@ function renderizarHabitos(
         adicionarStyle(apagar, ESTILOS.iconeApagar);
 
         apagar.onclick = function() {
+            // Retira o hábito dos dados salvos; a lista será reconstruída logo depois.
             const indiceHabito = listaDeHabitos.findIndex(
                 habito => habito.id === dadosHabito.id
             );
@@ -313,6 +409,7 @@ function renderizarHabitos(
             delete concluidas[dadosHabito.id];
             MudarBarra('habitos', -1, dadosHabito.tipo);
 
+            // Se estava concluído, também remove essa conclusão dos contadores.
             if (estavaConcluido) {
                 MudarBarra('habitosFeitos', -1);
             }
@@ -332,10 +429,12 @@ function renderizarHabitos(
         acoesTarefa.appendChild(apagar);
         habitoNovo.appendChild(acoesTarefa);
 
+        // Coloca o hábito pronto na lista visível.
         habitos.appendChild(habitoNovo);
     }
 }
 
+// Atualiza os contadores e a exibição do progresso.
 function MudarBarra(contador, quantidade, categoria) {
     informacoesDeHabitosAdicionados[contador] += quantidade;
 
@@ -375,6 +474,7 @@ function MudarBarra(contador, quantidade, categoria) {
     }
 }
 
+// Salva os dados do hábito e atualiza a lista renderizada.
 function AdicionarHabito(nomeHabito, tipo) {
     const novoHabito = {
         id: `habito${proximoIdHabito++}`,
@@ -387,6 +487,7 @@ function AdicionarHabito(nomeHabito, tipo) {
     renderizarHabitos();
 }
 
+// Abre o formulário, sem criar mais de um modal ao mesmo tempo.
 function CriarHabito() {
     if (document.getElementById("modal-criacao-habito")) return;
 
@@ -498,6 +599,7 @@ function CriarHabito() {
     main.appendChild(modal);
 }
 
+// Alterna entre as telas do aplicativo.
 let telaAtiva = document.getElementById("visao-geral");
 function AtivarTela(idTela, idBotao) {
     const telaParaAtivar = document.getElementById(idTela);
@@ -517,6 +619,8 @@ function AtivarTela(idTela, idBotao) {
     telaAtiva = telaParaAtivar;
 }
 
-filtroChecklist.addEventListener("change", function() {
-    renderizarHabitos(informacoesDeHabitosAdicionados.checagemConcluidos, this.value);
-});
+if (filtroChecklist) {
+    filtroChecklist.addEventListener("change", function() {
+        renderizarHabitos(informacoesDeHabitosAdicionados.checagemConcluidos, this.value);
+    });
+}
