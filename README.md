@@ -185,12 +185,12 @@ HabitFlow/
 - [x] Aprimoramento da responsividade.
 - [x] Implementação completa da edição e exclusão de hábitos.
 - [x] Atualização automática da barra de progresso geral.
-
+- [x] Implementação de filtros e buscas funcionais.
+ 
 ### Funcionalidades pendentes
 
 - [ ] Integração dos dados de descrição e categoria na listagem.
 - [ ] Implementação completa do gerenciamento de tarefas.
-- [ ] Implementação de filtros e buscas funcionais.
 - [ ] Armazenamento persistente dos dados.
 
 ## 📦 10. Escopo da Primeira Entrega
