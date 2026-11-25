@@ -3,6 +3,7 @@ const habitos = document.getElementById("lista-habitos-hoje");
 const vazioHoje = document.getElementById("mensagem-vazio-hoje");
 const main = document.getElementById("main-tela");
 const filtroChecklist = document.getElementById("filtro-checklist");
+let textoPesquisa = "";
 const DURACAO_TRANSICAO_CONCLUIR = 500;
 
 const ESTILOS = {
@@ -157,17 +158,21 @@ function adicionarStyle(elemento, estilos) {
 
 function renderizarHabitos(
     concluidas = informacoesDeHabitosAdicionados.checagemConcluidos,
-    filtro = filtroChecklist.value
+    filtro = filtroChecklist.value,
+    pesquisa = textoPesquisa
 ) {
     // O mapa "concluidas" registra quais hábitos foram marcados; o filtro vem do seletor da tela.
     const listaDeHabitos = informacoesDeHabitosAdicionados.infoHabitos;
+    const termoPesquisa = pesquisa.trim().toLowerCase();
     const habitosFiltrados = listaDeHabitos.filter(dadosHabito => {
         const concluido = Boolean(concluidas[dadosHabito.id]);
 
         // Decide quais hábitos aparecem, sem apagar do cadastro os que ficam fora do filtro.
-        if (filtro === "concluidas") return concluido;
-        if (filtro === "pendentes") return !concluido;
-        return true;
+        if (filtro === "concluidas" && !concluido) return false;
+        if (filtro === "pendentes" && concluido) return false;
+
+        return termoPesquisa === "" ||
+            dadosHabito.nome.toLowerCase().includes(termoPesquisa);
     });
 
     // Remove os itens antigos e mantém a mensagem disponível para quando a lista ficar vazia.
@@ -183,9 +188,13 @@ function renderizarHabitos(
 
     if (habitosFiltrados.length === 0) {
         // Informa quando há hábitos, mas nenhum corresponde ao filtro escolhido.
-        vazioHoje.textContent = filtro === "concluidas"
-            ? "Nenhuma tarefa concluída."
-            : "Nenhuma tarefa pendente.";
+        vazioHoje.textContent = termoPesquisa !== ""
+            ? "Nenhuma tarefa encontrada."
+            : filtro === "concluidas"
+                ? "Nenhuma tarefa concluída."
+                : filtro === "pendentes"
+                    ? "Nenhuma tarefa pendente."
+                    : "Nenhuma tarefa cadastrada.";
         adicionarStyle(vazioHoje, ESTILOS.listaVazia);
         adicionarStyle(habitos, ESTILOS.listaRestaurada);
         return;
@@ -289,6 +298,7 @@ function renderizarHabitos(
 
                 containerTexto.replaceChild(textoSpan, inputEdicao);
                 adicionarStyle(containerTexto, estilosAnteriores);
+                renderizarHabitos(concluidas);
             };
 
             inputEdicao.addEventListener("keydown", function(event) {
@@ -538,4 +548,12 @@ function AtivarTela(idTela, idBotao) {
 
 filtroChecklist.addEventListener("change", function() {
     renderizarHabitos(informacoesDeHabitosAdicionados.checagemConcluidos, this.value);
+});
+
+// pesquisa de hábitos
+
+const inputPesquisa = document.getElementById("campo-nova-tarefa");
+inputPesquisa.addEventListener("input", function() {
+    textoPesquisa = this.value;
+    renderizarHabitos(informacoesDeHabitosAdicionados.checagemConcluidos,filtroChecklist.value);
 });
