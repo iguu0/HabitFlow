@@ -173,29 +173,6 @@ const ESTILOS = {
         gap: "4px",
         marginLeft: "auto"
     },
-    modal: {
-        position: "fixed",
-        inset: "0",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "16px",
-        backgroundColor: "rgba(11, 15, 23, 0.72)",
-        zIndex: "1000"
-    },
-    formularioModal: {
-        width: "min(500px, 100%)",
-        maxHeight: "calc(100vh - 32px)",
-        overflowY: "auto",
-        boxShadow: "0 20px 60px rgba(0, 0, 0, 0.5)"
-    },
-    grupoBotoesFormulario: {
-        justifyContent: "flex-end"
-    },
-    botaoFormulario: {
-        flex: "1 1 140px",
-        maxWidth: "140px"
-    },
     telaInativa: {
         display: "none"
     },
@@ -503,11 +480,9 @@ function CriarHabito() {
 
     const modal = document.createElement('div');
     modal.id = "modal-criacao-habito";
-    adicionarStyle(modal, ESTILOS.modal);
 
     const formulario = document.createElement('form');
     formulario.className = "card-formulario";
-    adicionarStyle(formulario, ESTILOS.formularioModal);
 
     formulario.addEventListener("submit", function(event) {
         event.preventDefault();
@@ -583,19 +558,16 @@ function CriarHabito() {
 
     const grupoBotoes = document.createElement('div');
     grupoBotoes.className = "acoes-formulario";
-    adicionarStyle(grupoBotoes, ESTILOS.grupoBotoesFormulario);
 
     const botaoCriar = document.createElement('button');
     botaoCriar.type = "submit";
     botaoCriar.className = "btn-primario";
     botaoCriar.textContent = "Criar";
-    adicionarStyle(botaoCriar, ESTILOS.botaoFormulario);
 
     const botaoCancelar = document.createElement('button');
     botaoCancelar.type = "button";
     botaoCancelar.className = "btn-neutro";
     botaoCancelar.textContent = "Cancelar";
-    adicionarStyle(botaoCancelar, ESTILOS.botaoFormulario);
 
     botaoCancelar.onclick = function() {
         modal.remove();
