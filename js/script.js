@@ -190,7 +190,7 @@ const ESTILOS = {
         boxShadow: "0 20px 60px rgba(0, 0, 0, 0.5)"
     },
     grupoBotoesFormulario: {
-        justifyContent: "center"
+        justifyContent: "flex-end"
     },
     botaoFormulario: {
         flex: "1 1 140px",

@@ -207,6 +207,74 @@ input:focus, select:focus { border-color: var(--azul); outline: none; box-shadow
 
 .btn-full { width: 100%; margin-top: 16px; }
 
+/* Formulario de criacao de habitos */
+#modal-criacao-habito {
+  backdrop-filter: blur(6px);
+}
+
+#modal-criacao-habito .card-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 32px;
+  border: 1px solid rgba(0, 200, 255, .24);
+  border-radius: 20px;
+  background: linear-gradient(155deg, #182335, #101722);
+}
+
+#modal-criacao-habito .grupo-campo {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+#modal-criacao-habito label {
+  color: #dce7f5;
+  font-size: .9rem;
+  font-weight: 600;
+}
+
+#modal-criacao-habito input,
+#modal-criacao-habito select {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid #33445d;
+  border-radius: 10px;
+  background: #0e1622;
+  color: var(--texto);
+  font: inherit;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+#modal-criacao-habito input::placeholder {
+  color: var(--texto-suave);
+}
+
+#modal-criacao-habito input:focus,
+#modal-criacao-habito select:focus {
+  border-color: var(--azul);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 200, 255, .16);
+}
+
+#modal-criacao-habito .acoes-formulario {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 18px;
+  border-top: 1px solid var(--borda);
+}
+
+#modal-criacao-habito .btn-neutro {
+  background: rgba(255, 255, 255, .03);
+}
+
+#modal-criacao-habito .btn-neutro:hover {
+  border-color: #52627a;
+}
+
 
 /* ================= CHECKLIST ================= */
 
@@ -401,6 +469,8 @@ input:focus, select:focus { border-color: var(--azul); outline: none; box-shadow
   .form-tarefa-inline { flex-direction: column; align-items: stretch; }
   .form-tarefa-inline input { max-width: none; }
   #filtro-checklist { width: 100%; }
+
+  #modal-criacao-habito .card-formulario { padding: 24px 20px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
