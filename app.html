@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HabitFlow - Painel do Usuario</title>
     <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="img/favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon.png">
 </head>
 <body class="layout-app">
     <aside class="sidebar">
@@ -16,12 +20,15 @@
         <nav class="sidebar-nav" aria-label="Navegacao principal">
             <ul>
                 <li><a href="#visao-geral" class="nav-item ativo" id="link-visao-geral" onclick="AtivarTela('visao-geral', 'link-visao-geral')">Visao Geral</a></li>
-                <li><a href="#meus-habitos" class="nav-item" id="link-meus-habitos">Meus habitos</a></li>
                 <li><a href="#meu-checklist" class="nav-item" id="link-meu-checklist" onclick="AtivarTela('meu-checklist', 'link-meu-checklist')">Meu checklist</a></li>
-                <li><a href="#perfil" class="nav-item" id="link-perfil">Perfil</a></li>
+                <li><a href="#perfil" class="nav-item" id="link-perfil" onclick="AtivarTela('perfil', 'link-perfil')">Perfil</a></li>
                 <li><a href="index.html" class="nav-item nav-sair" id="link-sair">Sair / Voltar</a></li>
             </ul>
         </nav>
+
+        <div class="sidebar-logo-img">
+            <img src="img/logo-habitflow.png" alt="HabitFlow - Construa os seus hábitos">
+        </div>
     </aside>
 
     <div class="painel-conteudo">
@@ -79,99 +86,6 @@
                                 </div>
                             </div>
                         </section>
-                    </section>
-
-                    <!-- Meus Hábitos -->
-                    <section id="meus-habitos" class="tela-secao">
-                        <header class="secao-cabecalho">
-                            <h2>Meus Habitos</h2>
-                        </header>
-
-                        <div class="grade-meus-habitos">
-                            <div class="coluna-listagem">
-                                <div class="barra-ferramentas">
-                                    <label for="filtro-busca-habito" class="sr-only">Busca dos habitos</label>
-                                    <input type="search" id="filtro-busca-habito" placeholder="Busca dos habitos...">
-
-                                    <label for="filtro-categoria" class="sr-only">Filtrar por Categoria</label>
-                                    <select id="filtro-categoria">
-                                        <option value="todas">Todas as categorias</option>
-                                        <option value="Saude">Saude</option>
-                                        <option value="Carreira">Carreira</option>
-                                        <option value="Estudos">Estudos</option>
-                                        <option value="Produtividade">Produtividade</option>
-                                    </select>
-
-                                    <button type="button" class="btn-secundario" id="btn-gerenciar-categorias">
-                                        Gerenciar Categorias
-                                    </button>
-                                </div>
-
-                                <div class="tabela-container">
-                                    <table class="tabela-habitos">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Nome</th>
-                                                <th scope="col">Categoria</th>
-                                                <th scope="col">Meta</th>
-                                                <th scope="col">Dias</th>
-                                                <th scope="col">Acoes</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="corpo-tabela-habitos">
-                                            <tr id="linha-tabela-vazia">
-                                                <td colspan="5" class="texto-centralizado">Nenhum habito cadastrado ate o momento.</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div class="coluna-formulario">
-                                <section class="card-formulario">
-                                    <h3 id="titulo-form-habito">Adicionar Novo Habito</h3>
-                                    <form id="form-habito">
-                                        <input type="hidden" id="habito-id" value="">
-
-                                        <div class="grupo-campo">
-                                            <label for="habito-nome">Nome do habito</label>
-                                            <input type="text" id="habito-nome" name="nome" placeholder="Ex: Beber agua, Praticar exercicios" required>
-                                        </div>
-
-                                        <div class="grupo-campo">
-                                            <label for="habito-categoria">Categoria</label>
-                                            <select id="habito-categoria" name="categoria" required>
-                                                <option value="" disabled selected>Selecione a categoria</option>
-                                                <option value="Saude">Saude</option>
-                                                <option value="Carreira">Carreira</option>
-                                                <option value="Estudos">Estudos</option>
-                                                <option value="Produtividade">Produtividade</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="grupo-campo">
-                                            <label for="habito-meta">Meta diaria ou semanal</label>
-                                            <input type="text" id="habito-meta" name="meta" placeholder="Ex: 30 min/dia, 2L/dia" required>
-                                        </div>
-
-                                        <div class="grupo-campo">
-                                            <label for="habito-frequencia">Frequencia</label>
-                                            <select id="habito-frequencia" name="frequencia" required>
-                                                <option value="" disabled selected>Selecione a frequencia</option>
-                                                <option value="Diario">Diario</option>
-                                                <option value="Dias uteis">Dias uteis</option>
-                                                <option value="Finais de semana">Finais de semana</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="acoes-formulario">
-                                            <button type="submit" class="btn-primario" id="btn-salvar-habito">Salvar Habito</button>
-                                            <button type="reset" class="btn-neutro" id="btn-cancelar-habito">Cancelar</button>
-                                        </div>
-                                    </form>
-                                </section>
-                            </div>
-                        </div>
                     </section>
 
                     <!-- Meu Checklist -->
